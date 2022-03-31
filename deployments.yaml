@@ -5,16 +5,16 @@ metadata:
   name: mongodb-admin-deployment
 
 spec:
-  replicas: 1   # No of pods
+  replicas: 1   
 
-  selector:     # Connects the deployment with the pods it should manage(label --> app:mongo_admin)
+  selector:     
     matchLabels:
       app: mongo_admin
 
-  template:     # Template refers to the pods created under this deployment
+  template:    
     metadata:
       labels:
-        app: mongo_admin  # Assigned labels to the 1 pod
+        app: mongo_admin  
 
     spec:
       containers:
@@ -22,14 +22,13 @@ spec:
         image: mongo
         ports:
         - containerPort: 27017
-        #imagePullPolicy: Never
 
         env:
-        - name: MONGO_INITDB_ROOT_USERNAME  # Actual env name to be given to container/pod
+        - name: MONGO_INITDB_ROOT_USERNAME  
           valueFrom:
             secretKeyRef:
-              name: mongo-admin-creds  # Name given to the secret in secret.yaml
-              key: username  # key defined in secret.yaml
+              name: mongo-admin-creds  
+              key: username  
 
         - name: MONGO_INITDB_ROOT_PASSWORD  
           valueFrom:
@@ -46,31 +45,31 @@ metadata:
   name: mongo-express-deployment
 
 spec:
-  replicas: 1   # No of pods
+  replicas: 1   
 
-  selector:     # Connects the deployment with the pods it should manage(label --> app:mongo_admin)
+  selector:     
     matchLabels:
       app: mongo_express
 
-  template:     # Template refers to the pods created under this deployment
+  template:     
     metadata:
       labels:
-        app: mongo_express  # Assigned labels to the 1 pod
+        app: mongo_express  
 
     spec:
       containers:
       - name: mongo-express-container
         image: mongo-express
         ports:
-        - containerPort: 8081   # mongo-express running on port 8081 in the container
+        - containerPort: 8081  
         imagePullPolicy: Always
 
         env:
-        - name: ME_CONFIG_MONGODB_ADMINUSERNAME  # Actual env name to be given to container/pod
+        - name: ME_CONFIG_MONGODB_ADMINUSERNAME  
           valueFrom:
             configMapKeyRef:
-              name: mongo-express-configmap  # Name given to the configmap in configmap.yaml
-              key: admin_user  # key defined in configmap.yaml
+              name: mongo-express-configmap  
+              key: admin_user  
 
         - name: ME_CONFIG_MONGODB_ADMINPASSWORD  
           valueFrom:
@@ -92,21 +91,21 @@ metadata:
   name: flask-app-deployment
 
 spec:
-  replicas: 1   # No of pods
+  replicas: 1   
 
-  selector:     # Connects the deployment with the pods it should manage(label --> app:mongo_admin)
+  selector:     
     matchLabels:
       app: flask_app
 
-  template:     # Template refers to the pods created under this deployment
+  template:     
     metadata:
       labels:
-        app: flask_app  # Assigned labels to the 1 pod
+        app: flask_app  
 
     spec:
       containers:
       - name: flask-app-container
-        image: gokul007x/kub-flask-app   # imagePullPolicy set to always if latest tag is used
-        imagePullPolicy: Always  # No fetching of image(if image present locally,use it or else error)
+        image: gokul007x/kub-flask-app   
+        imagePullPolicy: Always  
         ports:
-        - containerPort: 5001   # flask running on port 5001 in the container
+        - containerPort: 5001   
